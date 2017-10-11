@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -105,7 +106,7 @@ public class Extract {
 								if (fileCode64 == ""){
 									//本地文件，但是已经被删除(死链接)
 									logger.warn("Dead link URL = " + linkHref + "; DBId = " + rs_t.getInt("Id"));
-									FileHandler.getImageByStr(fileCode64, destDir + File.separator + linkHref.replace("/", "_"));
+									//FileHandler.getImageByStr(fileCode64, destDir + File.separator + linkHref.replace("/", "_"));
 								} else {
 									ns.fileNameList.add(linkHref);
 									ns.attdescList.add(linkText);
@@ -132,6 +133,8 @@ public class Extract {
 						GenerateXML.writeXML(ns);
 					}
 				}
+				logger.warn("*********************************Wait 1 Minute ");
+				TimeUnit.MINUTES.sleep(1);
 			}
 		} catch ( Exception e) {
 			// TODO Auto-generated catch block

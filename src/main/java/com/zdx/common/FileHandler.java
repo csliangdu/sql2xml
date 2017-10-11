@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -42,12 +43,15 @@ public class FileHandler {
 			FileHandler.closeHttpConn();
 			return new String(Base64.encodeBase64(data));// 返回Base64编码过的字节数组字符串  
 		}catch (FileNotFoundException e) {
-			logger.warn("Url connection failed! URL = " + destUrl);
-			//e.printStackTrace();
-			return null;
+			logger.warn("Dead link URL = " + destUrl);
+			return "";
+		}catch (ConnectException e) {
+			logger.warn("Connection Refused, please wait... URL = " + destUrl);
+			e.printStackTrace();
+			return "";
 		}catch (Exception e) {  
 			e.printStackTrace();
-			return null;
+			return "";
 		}
 	}  
 
