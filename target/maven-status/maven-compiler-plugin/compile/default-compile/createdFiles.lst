@@ -1,0 +1,6 @@
+com\zdx\common\GenerateXML.class
+com\zdx\common\SQLSeverLink.class
+com\zdx\common\DataSourceFactory.class
+com\zdx\common\FileHandler.class
+com\zdx\common\News.class
+com\zdx\trans\Extract.class

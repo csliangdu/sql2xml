@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+	<Appenders>
+		<!-- 配置日志输出文件名字 追加读写 -->
+
+		<RollingFile name="INFO" fileName="logs/info.log"
+			filePattern="log/$${date:yy-mm}/info-%d{mm-dd-yyyy}-%i.log.gz">
+			<ThresholdFilter level="info" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<!-- 输出格式 -->
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36} 'Line-' %L %M - %msg%xEx%n" />
+			<SizeBasedTriggeringPolicy size="50MB" />
+		</RollingFile>
+
+		<RollingFile name="WARN" fileName="logs/warn.log"
+			filePattern="log/$${date:yy-mm}/info-%d{mm-dd-yyyy}-%i.log.gz">
+			<ThresholdFilter level="warn" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<!-- 输出格式 -->
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36} 'Line-' %L %M - %msg%xEx%n" />
+			<SizeBasedTriggeringPolicy size="50MB" />
+		</RollingFile>
+
+		<RollingFile name="ERROR" fileName="logs/error.log"
+			filePattern="log/$${date:yy-mm}/error-%d{mm-dd-yyyy}-%i.log.gz">
+			<ThresholdFilter level="error" onMatch="ACCEPT"
+				onMismatch="DENY" />
+			<!-- 输出格式 -->
+			<PatternLayout
+				pattern="%d{yyyy-MM-dd 'at' HH:mm:ss z} %-5level %class{36} 'Line-' %L %M - %msg%xEx%n" />
+			<SizeBasedTriggeringPolicy size="10MB" />
+		</RollingFile>
+
+		<!-- 输出到控制台的配置 -->
+		<Console name="STDOUT" target="SYSTEM_OUT">
+			<!-- 输出格式 -->
+			<PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n" />
+		</Console>
+	</Appenders>
+
+	<Loggers>
+		<Root level="debug">
+			<AppenderRef ref="ERROR" />
+			<AppenderRef ref="INFO" />
+			<AppenderRef ref="STDOUT" />
+		</Root>
+
+	</Loggers>
+</Configuration>
