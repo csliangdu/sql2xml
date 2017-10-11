@@ -1,6 +1,6 @@
-C:\ZDX\code\Sql2Xml\src\main\com\zdx\trans\Extract.java
-C:\ZDX\code\Sql2Xml\src\main\com\zdx\common\News.java
-C:\ZDX\code\Sql2Xml\src\main\com\zdx\common\GenerateXML.java
-C:\ZDX\code\Sql2Xml\src\main\com\zdx\common\DataSourceFactory.java
-C:\ZDX\code\Sql2Xml\src\main\com\zdx\common\SQLSeverLink.java
-C:\ZDX\code\Sql2Xml\src\main\com\zdx\common\FileHandler.java
+C:\ZDX\code\Sql2Xml\src\main\java\com\zdx\common\GenerateXML.java
+C:\ZDX\code\Sql2Xml\src\main\java\com\zdx\trans\Extract.java
+C:\ZDX\code\Sql2Xml\src\main\java\com\zdx\common\DataSourceFactory.java
+C:\ZDX\code\Sql2Xml\src\main\java\com\zdx\common\FileHandler.java
+C:\ZDX\code\Sql2Xml\src\main\java\com\zdx\common\SQLSeverLink.java
+C:\ZDX\code\Sql2Xml\src\main\java\com\zdx\common\News.java

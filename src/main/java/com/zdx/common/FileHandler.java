@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.*;
@@ -47,8 +48,19 @@ public class FileHandler {
 			return "";
 		}catch (ConnectException e) {
 			logger.warn("Connection Refused, please wait... URL = " + destUrl);
-			e.printStackTrace();
-			return "";
+			logger.warn("*********************************Wait 1 Minute *********************************");
+			try {
+				TimeUnit.MINUTES.sleep(1);
+				return getImageStrByUrl(destUrl);
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				logger.warn("*********************************Wait failed *********************************");
+				e1.printStackTrace();
+				return "";
+			}
+			//e.printStackTrace();
+			//return "";
+			
 		}catch (Exception e) {  
 			e.printStackTrace();
 			return "";

@@ -54,20 +54,25 @@ public class Extract {
 				}
 				if (currentCount > 0){
 					ResultSet rs_t = ps_t.executeQuery();
+					int y = 0;
 					while(rs_t.next())
 					{
 						x = x + 1;
+						y = y + 1;
 						logger.info("Handle " + x + "/" + nSmp + "...");
 						News ns = new News();
 						//新闻日期做目录
 						Date cDate = rs_t.getDate("Dateline");//注意检查该字段是否=null
 						SimpleDateFormat formatter = new SimpleDateFormat ("yyyyMMdd"); 
-						ns.dateDir = formatter.format(cDate);
+						ns.dateDir = "data" +File.separator + formatter.format(cDate);
 						//新闻URL做标题
 						//String t = rs_t.getString("PageUrl").replaceAll("/", "_");
 						//ns.fileName = t.substring(0,t.lastIndexOf(".")) + ".xml";
 						ns.fileName = "" + rs_t.getInt("Id") + ".xml";
-
+						File f = new File(ns.dateDir + File.separator + ns.fileName);
+						if (f.exists()){
+							break;
+						}
 						ns.siteId = 0; //站点ID-----------------------------------------------
 
 						ns.subtitle = ""; //稿件副题 ------------------------------------------
@@ -132,9 +137,12 @@ public class Extract {
 						}
 						GenerateXML.writeXML(ns);
 					}
+					if (y > 50){
+						logger.warn("*********************************Wait 1 Minute *********************************");
+						TimeUnit.MINUTES.sleep(1);
+					}
 				}
-				logger.warn("*********************************Wait 1 Minute ");
-				TimeUnit.MINUTES.sleep(1);
+
 			}
 		} catch ( Exception e) {
 			// TODO Auto-generated catch block
