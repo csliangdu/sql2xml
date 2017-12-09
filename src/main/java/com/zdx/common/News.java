@@ -3,10 +3,12 @@ package com.zdx.common;
 import java.util.ArrayList;
 
 public class News {
+	public String sourceTable = "";
 	public String dateDir = "";
 	public String category = "";
 	public String newsId = "";
 	public String fileName = "";
+	public int channelId = 001;
 	public int articleType;
 	public int siteId;
 	public String subtitle="";

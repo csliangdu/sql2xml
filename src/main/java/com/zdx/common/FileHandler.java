@@ -11,7 +11,8 @@ import java.io.OutputStream;
 import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.concurrent.TimeUnit;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.*;
@@ -30,41 +31,56 @@ public class FileHandler {
 	 * @param input 
 	 * @return 
 	 */  
-	public static String getImageStrByUrl(String destUrl) {  
+	public static Map<String, String> getImageStrByUrl(String destUrl) {
+		Map<String, String> map = new HashMap<String, String>();
+		String code64 = "";
 		URL url = null;  
 		InputStream in = null; 
 		byte[] data = null;  
 		try{  
 			url = new URL(destUrl);  
-			httpUrl = (HttpURLConnection) url.openConnection();  
+			httpUrl = (HttpURLConnection) url.openConnection(); 
+			httpUrl.setConnectTimeout(5000);
+			httpUrl.setReadTimeout(5000);
 			httpUrl.connect();
 			in = httpUrl.getInputStream();
 			data = readInputStream(in);
+
+			code64 = new String(Base64.encodeBase64(data));// 返回Base64编码过的字节数组字符串 
+			map.put("code64", code64);
+			map.put("status", ""+ 202);
 			httpUrl.disconnect();
-			FileHandler.closeHttpConn();
-			return new String(Base64.encodeBase64(data));// 返回Base64编码过的字节数组字符串  
+			httpUrl = null;
 		}catch (FileNotFoundException e) {
-			logger.warn("Dead link URL = " + destUrl);
-			return "";
+			logger.warn("    404 : Dead link URL = " + destUrl);
+			map.put("code64", "");
+			map.put("status", ""+ 404);
 		}catch (ConnectException e) {
 			logger.warn("Connection Refused, please wait... URL = " + destUrl);
-			logger.warn("*********************************Wait 1 Minute *********************************");
+			map.put("code64", "");
+			map.put("status", ""+ 911);
+			/*logger.warn("*********************************Wait 10 Seconds *********************************");
 			try {
-				TimeUnit.MINUTES.sleep(1);
+				TimeUnit.SECONDS.sleep(10);
 				return getImageStrByUrl(destUrl);
 			} catch (InterruptedException e1) {
 				// TODO Auto-generated catch block
 				logger.warn("*********************************Wait failed *********************************");
 				e1.printStackTrace();
 				return "";
-			}
-			//e.printStackTrace();
-			//return "";
-			
+			}*/
+		} catch (IOException e){
+			logger.warn("503 : Dead link URL = " + destUrl);
+			map.put("code64", "");
+			map.put("status", ""+ 503);
 		}catch (Exception e) {  
 			e.printStackTrace();
-			return "";
+			map.put("code64", "");
+			map.put("status", ""+ 110);
 		}
+		url = null;
+		return map;
+
 	}  
 
 	public static byte[] readInputStream(InputStream inStream) throws Exception{  
@@ -159,9 +175,9 @@ public class FileHandler {
 	}
 
 	public void testFileHandler(String url, String path){
-		String str = FileHandler.getImageStrByUrl(url);  //读取输入流,转换为Base64字符  
-		System.out.println(str);  
-		FileHandler.getImageByStr(str, path);           //将Base64字符转换为图片  
+		Map<String, String> map = FileHandler.getImageStrByUrl(url);  //读取输入流,转换为Base64字符  
+		System.out.println(map.get("code64"));  
+		FileHandler.getImageByStr(map.get("code64"), path);           //将Base64字符转换为图片  
 		FileHandler.closeHttpConn();  
 	}
 }

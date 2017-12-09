@@ -95,8 +95,8 @@ public class GenerateXML {
 		}
 
 		OutputFormat format = OutputFormat.createPrettyPrint();
-		format.setEncoding("gb2312");
-		String destDir = System.getProperty("user.dir") + File.separator + ns.dateDir;
+		format.setEncoding("UTF-8");
+		String destDir = System.getProperty("user.dir") + File.separator + ns.sourceTable + File.separator + ns.channelId + File.separator + ns.dateDir;
 		String destFile = destDir + File.separator + ns.fileName;
 		File dir = new File(destDir);
 		if (!dir.exists() || !dir.isDirectory()) {
